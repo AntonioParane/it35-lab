@@ -28,9 +28,11 @@ import {
               height: '100%',
             }}
           >
-            Favorites
+            Ako nani
           </div>
         </IonContent>
       </IonPage>
     );
   };
+
+  export default Favorites;
