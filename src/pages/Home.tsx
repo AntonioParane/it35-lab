@@ -12,8 +12,10 @@ import {
       IonToolbar 
   } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { Route } from 'react-router';
+import { Redirect, Route } from 'react-router';
 import Feed from './home-tabs/Feed';
+import Favorites from './home-tabs/favorites';
+import Search from './home-tabs/Search';
   
   const Home: React.FC = () => {
 
@@ -28,7 +30,9 @@ import Feed from './home-tabs/Feed';
             <Route exact path="/it35-lab/app/home/search" component={Search} />
             <Route exact path="/it35-lab/app/home/favorites" component={Favorites} />
           
-            <Route exact path="/it35-lab/app/home"> 
+            <Route exact path="/it35-lab/app/home">
+            <Redirect to="/it35-lab/app/home/feed"/>
+            </Route>
           </IonRouterOutlet>
         </IonTabs>
       </IonReactRouter>
