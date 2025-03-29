@@ -14,7 +14,7 @@ import {
     IonFooter
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { supabase } from './supabase';
+import { supabase } from '../utils/supabaseClient';
 
 const Login: React.FC = () => {
     const history = useHistory();

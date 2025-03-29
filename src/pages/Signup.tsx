@@ -16,6 +16,7 @@ import {
     IonText
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
+import { supabase } from '../utils/supabaseClient';
 
 const Signup: React.FC = () => {
     const history = useHistory();
@@ -23,16 +24,34 @@ const Signup: React.FC = () => {
     const [regPassword, setRegPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showToast, setShowToast] = useState(false);
-    const [showModal, setShowModal] = useState(false); 
+    const [toastMessage, setToastMessage] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
-    const handleRegister = () => {
-        if (regPassword === confirmPassword) {
-            localStorage.setItem('username', regUsername);
-            localStorage.setItem('password', regPassword);
+    const handleRegister = async () => {
+        if (regPassword !== confirmPassword) {
+            setToastMessage("Passwords do not match!");
+            setShowToast(true);
+            return;
+        }
+
+        try {
+            const { data, error } = await supabase.auth.signUp({
+                email: regUsername,
+                password: regPassword,
+            });
+
+            if (error) {
+                setToastMessage(error.message);
+                setShowToast(true);
+                return;
+            }
+
+            setToastMessage("Account created successfully!");
             setShowToast(true);
             setShowModal(true);
-        } else {
-            alert("Passwords do not match!");
+        } catch (err) {
+            setToastMessage("An error occurred. Please try again.");
+            setShowToast(true);
         }
     };
 
@@ -42,7 +61,7 @@ const Signup: React.FC = () => {
     };
 
     const handleCancel = () => {
-        setShowModal(false); 
+        setShowModal(false);
     };
 
     return (
@@ -55,7 +74,7 @@ const Signup: React.FC = () => {
             <IonContent className='ion-padding'>
                 <IonList>
                     <IonItem>
-                        <IonLabel position="floating">Username</IonLabel>
+                        <IonLabel position="floating">Email</IonLabel>
                         <IonInput value={regUsername} onIonChange={e => setRegUsername(e.detail.value!)} />
                     </IonItem>
                     <IonItem>
@@ -74,12 +93,11 @@ const Signup: React.FC = () => {
                 <IonToast
                     isOpen={showToast}
                     onDidDismiss={() => setShowToast(false)}
-                    message="Account created successfully!"
-                    duration={2000}
+                    message={toastMessage}
+                    duration={3000}
                 />
             </IonFooter>
 
-            {}
             <IonModal isOpen={showModal} onDidDismiss={handleCancel}>
                 <IonHeader>
                     <IonToolbar>
