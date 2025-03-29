@@ -13,7 +13,8 @@ import {
     IonToast,
     IonFooter
 } from '@ionic/react';
-import { useHistory } from 'react-router-dom'; 
+import { useHistory } from 'react-router-dom';
+import { supabase } from './supabase';
 
 const Login: React.FC = () => {
     const history = useHistory();
@@ -22,29 +23,29 @@ const Login: React.FC = () => {
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
 
-    const doLogin = () => {
- 
-        const storedUsername = localStorage.getItem('username');
-        const storedPassword = localStorage.getItem('password');
+    const doLogin = async () => {
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: username,
+                password: password,
+            });
 
+            if (error) {
+                setToastMessage("Invalid username or password.");
+                setShowToast(true);
+                return;
+            }
 
-        if (!storedUsername || !storedPassword) {
-            setToastMessage("No account found. Please register first.");
+            setToastMessage("Login Successful!");
             setShowToast(true);
-            return;
-        }
 
-        if (username === storedUsername && password === storedPassword) {
-            setToastMessage("Login Successful!"); 
-            setShowToast(true); 
-
-         
             setTimeout(() => {
-                history.push('/it35-lab/app'); 
-            }, 2000); 
-        } else {
-            setToastMessage("Invalid username or password.");
-            setShowToast(true); 
+                history.push('/it35-lab/app');
+            }, 2000);
+
+        } catch (err) {
+            setToastMessage("An error occurred. Please try again.");
+            setShowToast(true);
         }
     };
 
@@ -58,7 +59,7 @@ const Login: React.FC = () => {
             <IonContent className='ion-padding'>
                 <IonList>
                     <IonItem>
-                        <IonLabel position="floating">Username</IonLabel>
+                        <IonLabel position="floating">Email</IonLabel>
                         <IonInput value={username} onIonChange={e => setUsername(e.detail.value!)} />
                     </IonItem>
                     <IonItem>
@@ -67,7 +68,7 @@ const Login: React.FC = () => {
                     </IonItem>
                 </IonList>
                 <IonButton onClick={doLogin} expand="full">Login</IonButton>
-                <IonButton onClick={() => history.push('/signup')} expand="full" color="secondary">Register</IonButton> {}
+                <IonButton onClick={() => history.push('/signup')} expand="full" color="secondary">Register</IonButton>
             </IonContent>
             <IonFooter>
                 <IonToast
