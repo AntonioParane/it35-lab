@@ -32,7 +32,7 @@ const Home: React.FC = () => {
       name: 'Search',
       tab: 'search',
       url: '/it35-lab/app/home/search',
-      icon: 'https://media.giphy.com/media/X7yG1lAl5C5VK/giphy.gif'
+      icon: 'https://cdn.dribbble.com/users/1100029/screenshots/6276269/loading-search-animation-2_1-drb.gif'
     },
     {
       name: 'Favorites',
