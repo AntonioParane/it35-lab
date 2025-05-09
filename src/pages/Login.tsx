@@ -15,7 +15,7 @@ import {
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { supabase } from '../utils/supabaseClient';
-import MyLogo from './MyLogo.png'
+import Life from './Life.png'
 
 const Login: React.FC = () => {
     const history = useHistory();
@@ -72,7 +72,7 @@ const Login: React.FC = () => {
                 >
                     {/* 👇 Logo Image */}
                     <img
-                        src={MyLogo}
+                        src={Life}
                         alt="App Logo"
                         style={{ width: '120px', height: '120px', objectFit: 'contain', marginBottom: '20px' }}
                     />
