@@ -18,16 +18,22 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-/* Dark mode setting */
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* import '@ionic/react/css/palettes/dark.always.css'; */
+/* import '@ionic/react/css/palettes/dark.class.css'; */
 import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
-
 import Login from './pages/Login';
-import Signup from "./pages/Signup";
 import Menu from './pages/Menu';
-import LandingPage from './pages/LandingPage'; // 👈 Add this line
+import Register from './pages/Register';
 
 setupIonicReact();
 
@@ -35,11 +41,9 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route exact path="/" component={LandingPage} />         {/* 👈 Default page */}
-        <Route exact path="/login" component={Login} />          {/* 👈 Changed from /it35-lab to /login */}
-        <Route exact path="/signup" component={Signup} />
+        <Route exact path="/it35-lab" component={Login} />
+        <Route exact path="/it35-lab/register" component={Register} />
         <Route path="/it35-lab/app" component={Menu} />
-        <Redirect exact from="/it35-lab" to="/login" />          {/* 👈 Keeps legacy path support */}
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
