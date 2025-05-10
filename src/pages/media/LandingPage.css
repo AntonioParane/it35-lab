@@ -1,0 +1,68 @@
+/* Top Navbar Enhancements */
+.ecolife-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .ecolife-logo {
+    width: 30px;
+    height: 30px;
+  }
+  
+  /* Sidebar Menu Styling */
+  ion-menu ion-item {
+    --padding-start: 16px;
+    --inner-padding-end: 16px;
+    border-radius: 8px;
+    margin: 8px 12px;
+    transition: background-color 0.3s ease;
+  }
+  
+  ion-menu ion-item:hover {
+    background-color: rgba(40, 167, 69, 0.1);
+  }
+  
+  /* Buttons in Nav */
+  ion-toolbar ion-buttons ion-button {
+    border-radius: 20px;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  
+  ion-toolbar ion-buttons ion-button:hover {
+    filter: brightness(0.95);
+  }
+  /* Background styling */
+.ecolife-content {
+    background: linear-gradient(to bottom right, #d4fc79, #96e6a1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  /* Card styling */
+  .eco-card {
+    width: 90%;
+    max-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 128, 0, 0.3);
+    background-color: #ffffffd9;
+    backdrop-filter: blur(5px);
+  }
+  
+  /* Toolbar enhancement */
+  .custom-toolbar {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Responsive center alignment */
+  .centered-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
