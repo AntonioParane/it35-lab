@@ -16,9 +16,12 @@ import {
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import lifeImg from './media/Life.png';
+import first from './media/first.png';
+import bg from './media/Northern.jpg';
+import second from './media/Screenshot.png';
 const LandingPage: React.FC = () => {
   const history = useHistory();
-
+  const images = [first, second];
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -111,7 +114,7 @@ const LandingPage: React.FC = () => {
                 <img
                   src={lifeImg}
                   alt="Ecolife Logo"
-                  style={{ width: '32px', height: '32px', borderRadius: '6px' }}
+                  style={{ width: '50px', height: '50px', borderRadius: '6px' }}
                 />
                 <span
                   style={{
@@ -127,7 +130,7 @@ const LandingPage: React.FC = () => {
                     textShadow: '1px 1px 2px rgba(0, 0, 0, 0.1)',
                   }}
                 >
-                  Ecolife
+                  ECO <br /> LIFE
                 </span>
               </div>
             </IonTitle>
@@ -152,17 +155,17 @@ const LandingPage: React.FC = () => {
           <h1
   style={{
     fontWeight: 'bolder',
-    fontSize: '36px',
-    letterSpacing: '2px',
-    color: '#2c6e49', // Earthy green color
-    fontFamily: 'Georgia, serif', // A more natural and organic font family
-    background: 'linear-gradient(90deg, #84c1a0, rgb(67, 180, 36))', // Green gradient like leaves
+    fontSize: '50px',
+    letterSpacing: '1px',
+    color: '#2c6e49', 
+    fontFamily: 'Georgia, serif',
+    background: 'linear-gradient(90deg, #84c1a0, rgb(67, 180, 36))',
     WebkitBackgroundClip: 'text', 
     WebkitTextFillColor: 'transparent',
-    textShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)', // Slight shadow for texture
+    textShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)', 
     padding: '10px',
     textAlign: 'center',
-    WebkitTextStroke: '2pxrgb(9, 10, 9)', // Adding a dark green stroke around the text
+    WebkitTextStroke: 'black 1px',
   }}
 >
   Welcome to Ecolife
@@ -172,19 +175,19 @@ const LandingPage: React.FC = () => {
             <p style={{  margin:'-30',fontSize: '14px',
     fontWeight: 'bold',
     fontFamily: 'Georgia, serif',
-    color: 'green', // Fallback
-    WebkitTextStroke: '0.5px darkgreen', // Thin dark green stroke
-    WebkitTextFillColor: 'black', // Fill color to enable stroke visibility
+    color: 'green', 
+    WebkitTextStroke: '0.5px darkgreen', 
+    WebkitTextFillColor: 'black', 
     textShadow: '1px 1px 2px rgba(0,0,0,0.1)',}}>What is Carbon Footprint?</p>
             <p
   style={{
     fontSize: '14px',
     fontWeight: 'bold',
     fontFamily: 'Georgia, serif',
-    color: 'green', // Fallback
-    WebkitTextStroke: '0.5px darkgreen', // Thin dark green stroke
-    WebkitTextFillColor: 'black', // Fill color to enable stroke visibility
-    textShadow: '1px 1px 2px rgba(0,0,0,0.1)', // Optional: subtle shadow for depth
+    color: 'green',
+    WebkitTextStroke: '0.5px darkgreen', 
+    WebkitTextFillColor: 'black',
+    textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
   }}
 >
   Get to know your Carbon Footprint using our Calculator.
@@ -207,40 +210,41 @@ const LandingPage: React.FC = () => {
       flexWrap: 'wrap',
     }}
   >
-    {[1, 2].map((_, i) => (
-      <img
-        key={i}
-        src={lifeImg}
-        alt={`Ecolife Logo ${i + 1}`}
-        style={{
-          width: '25vw',
-          maxWidth: '140px',
-          minWidth: '80px',
-          aspectRatio: '1/1',
-          borderRadius: '50%',
-          border: '4px solid #4caf50',
-          boxShadow: '0 6px 12px rgba(0,0,0,0.25)',
-          transition: 'transform 0.3s ease',
-        }}
-        onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
-        onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-      />
-    ))}
+   {images.map((imgSrc, i) => (
+    <img
+      key={i}
+      src={imgSrc}
+      alt={`Ecolife Logo ${i + 1}`}
+      style={{
+        width: '25vw',
+        maxWidth: '140px',
+        minWidth: '80px',
+        aspectRatio: '1/1',
+        borderRadius: '50%',
+        border: '4px solid #4caf50',
+        boxShadow: '0 6px 12px rgba(0,0,0,0.25)',
+        transition: 'transform 0.3s ease',
+      }}
+      onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
+      onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+    />
+  ))}
   </div>
 
   {/* Fullscreen Width Boxed Image */}
 <img
-  src={lifeImg}
+  src={bg}
   alt="Ecolife Logo Box Fullscreen"
   style={{
-    width: '100vw',               // full screen width
-    height: '25vh',               // responsive height (35% of viewport height)
-    objectFit: 'cover',           // crop image nicely
-    borderRadius: '0',            // remove rounding for edge-to-edge look
+    width: '100vw',            
+    height: '30vh',             
+    objectFit: 'cover',        
+    borderRadius: '0',         
     borderTop: '4px solid #2e7d32',
     borderBottom: '4px solid #2e7d32',
     boxShadow: '0 6px 12px rgba(0,0,0,0.25)',
     transition: 'transform 0.3s ease',
+    marginBottom: '-50px',
   }}
   onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.01)')}
   onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
@@ -250,10 +254,29 @@ const LandingPage: React.FC = () => {
 
           </section>
 
-          <section id="about" style={{ padding: '16px', color: 'darkgreen' }}>
-            <h2>About Carbon Footprint</h2>
+          <section id="about" style={{ padding: '16px',  }}>
+          <h2
+  style={{
+    fontSize: '25px',
+    fontWeight: 'bolder',
+    color: '#2e7d32',
+    fontFamily: 'Arial, sans-serif',
+    textAlign: 'center',
+    
+    marginBottom: '12px',
+  }}
+>
+  About Carbon Footprint
+</h2>
+
             <p style={{ fontSize: '14px', lineHeight: '1.6' }}>
-              A carbon footprint is the total greenhouse gas emissions caused directly and indirectly by an individual, organization, event, or product.
+            A carbon footprint measures the total greenhouse gas emissions, mainly carbon dioxide and methane, generated by an individual, institution, or community through various activities such as energy use, transportation, and consumption. At Northern Bukidnon State College (NBSC), understanding and managing our carbon footprint is essential as we strive to become a more environmentally responsible institution.
+
+NBSC, located in a growing rural region, contributes to emissions through electricity usage, campus transportation, and daily operations. However, the college also has unique opportunities to lead in sustainable practices. Through awareness campaigns, eco-friendly campus initiatives, and integration of green practices in education and policy, NBSC is taking steps to reduce its environmental impact.
+
+Promoting carbon awareness among students, faculty, and staff is key to fostering a culture of sustainability. As we continue to grow, managing NBSC’s carbon footprint supports not only climate action but also a healthier, greener future for the entire Bukidnon community.
+
+
             </p>
           </section>
 
