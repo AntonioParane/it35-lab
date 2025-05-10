@@ -8,6 +8,7 @@ import {
     IonInputPasswordToggle,
     IonPage,
     IonToast,
+    IonText,
     useIonRouter
   } from '@ionic/react';
   import { useState } from 'react';
@@ -54,7 +55,7 @@ import {
         <IonContent
           fullscreen
           style={{
-            position: 'relative', // Make sure the content is positioned correctly
+            position: 'relative', 
           }}
         >
           {/* Background Image */}
@@ -77,14 +78,14 @@ import {
           {/* Login Form */}
           <div
             style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.88)', // Semi-transparent background
+              backgroundColor: 'rgba(255, 255, 255, 0.88)',
               borderRadius: '10px',
               padding: '20px',
               width: '90%',
               maxWidth: '400px',
               margin: 'auto',
               marginTop: '15%',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.87)',
               textAlign: 'center',
             }}
           >
@@ -100,48 +101,82 @@ import {
   
 <div style={{ textAlign: 'center', marginBottom: '20px' }}>
   <h1 style={{ fontWeight: 'bold', color: '#2E8B57' }}>Welcome to Eco Life 🌿</h1>
-  <h2 style={{ marginTop: '10px', fontWeight: 'bold' }}>User Login</h2>
+  <h2 style={{ marginTop: '10px', fontWeight: 'bold', color: '#2E8B57' }}>User Login</h2>
 </div>
 
   
-            <IonInput
-              label="Email"
-              labelPlacement="floating"
-              fill="outline"
-              color={'dark'}
-              type="email"
-              placeholder="Enter Email"
-              value={email}
-              onIonChange={e => setEmail(e.detail.value!)}
-            />
-            <IonInput
-            label="Password"
-              labelPlacement="floating"
-              style={{ marginTop: '10px' }}
-              fill="outline"
-              color={'dark'}
-              type="password"
-              placeholder="Password"
-              value={password}
-              onIonChange={e => setPassword(e.detail.value!)}
-            >
-              <IonInputPasswordToggle slot="end" color={'dark'} className="custom-eye-icon" />
-            </IonInput>
+<div style={{ textAlign: 'left', width: '100%', marginTop: '15px' }}>
+  <IonInput
+    label="Email"
+    labelPlacement="floating"
+    fill="outline"
+    color="success"
+    type="email"
+    placeholder="Enter Email"
+    value={email}
+    onIonChange={e => setEmail(e.detail.value!)}
+    style={{
+      borderRadius: '8px',
+      padding: '12px',
+      fontSize: '16px',
+      backgroundColor: '#f9f9f9',
+      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+    }}
+  />
+</div>
+
+<div style={{ textAlign: 'left', width: '100%', marginTop: '15px' }}>
+  <IonInput
+    label="Password"
+    labelPlacement="floating"
+    fill="outline"
+    color="success"
+    type="password"
+    placeholder="Enter password"
+    value={password}
+    onIonChange={e => setPassword(e.detail.value!)}
+    style={{
+      borderRadius: '8px',
+      padding: '12px',
+      fontSize: '16px',
+      backgroundColor: '#f9f9f9',
+      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+    }}
+  >
+    <IonInputPasswordToggle slot="end" color="dark" className="custom-eye-icon" />
+  </IonInput>
+</div>
+
   
-            <IonButton onClick={doLogin} expand="full"  shape="round" style={{ marginTop: '20px'  }}>
+            <IonButton onClick={doLogin} expand="full" color="success" shape="round" style={{ marginTop: '20px'  }}>
               Login
             </IonButton>
   
-            <IonButton
-              routerLink="/it35-lab/register"
-              expand="full"
-              fill="clear"
-              color={'dark'}
-              shape="round"
-              style={{ marginTop: '10px' }}
-            >
-              Don't have an account? Register here
-            </IonButton>
+            <div style={{ textAlign: 'center', marginTop: '10px' }}>
+  <IonText style={{ display: 'inline' }}>
+    Don't have an account?{' '}
+  </IonText>
+  <IonButton
+    routerLink="/it35-lab/register"
+    fill="clear"
+    color="primary"
+    size="small"
+    shape="round"
+    style={{
+      display: 'inline',
+      padding: '0',
+      height: 'auto',
+      fontSize: 'inherit',
+      verticalAlign: 'baseline',
+      textTransform: 'none',
+      minWidth: 'unset',
+    }}
+  >
+    Sign up now
+  </IonButton>
+</div>
+
+
           </div>
   
           {/* Alert and Toast */}

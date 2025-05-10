@@ -100,7 +100,6 @@ const Register: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-
         {/* Background Image */}
         <div
           style={{
@@ -197,10 +196,10 @@ const Register: React.FC = () => {
             <IonInputPasswordToggle slot="end" />
           </IonInput>
 
-          <IonButton onClick={handleOpenVerificationModal} expand="full" shape="round" style={{ marginTop: '25px' }}>
+          <IonButton onClick={handleOpenVerificationModal} expand="full" shape="round" color="success" style={{ marginTop: '25px', color : 'white' }}>
             Register
           </IonButton>
-          <IonButton routerLink="/it35-lab" expand="full" fill="clear" shape="round">
+          <IonButton routerLink="/it35-lab" expand="full" fill="clear" shape="round" color="dark">
             Already have an account? Sign in
           </IonButton>
         </div>
@@ -255,7 +254,7 @@ const Register: React.FC = () => {
               <p>Your account has been created successfully.</p>
               <p>Please check your email address.</p>
             </IonText>
-            <IonButton routerLink="/it35-lab" routerDirection="back" color="primary">
+            <IonButton routerLink="/it35-lab" routerDirection="back" color="success">
               Go to Login
             </IonButton>
           </IonContent>
