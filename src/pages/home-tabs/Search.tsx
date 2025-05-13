@@ -30,6 +30,16 @@ const CarbonFootprint: React.FC = () => {
   const [amount, setAmount] = useState('');
   const [presentToast] = useIonToast();
 
+
+const [electricityFacility, setElectricityFacility] = useState('');
+const [electricityYear, setElectricityYear] = useState('');
+const [electricityMonth, setElectricityMonth] = useState('');
+const [electricityType, setElectricityType] = useState('');
+const [electricitySource, setElectricitySource] = useState('');
+const [electricityUnit, setElectricityUnit] = useState('');
+const [electricityAmount, setElectricityAmount] = useState('');
+
+
   const handleSave = async () => {
     if (!facility || !hostel || !year || !month || !fuelType || !unit || !amount) {
       presentToast({
@@ -76,6 +86,35 @@ const CarbonFootprint: React.FC = () => {
     }
   };
 
+const handleSaveElectricity = async () => {
+  const { data, error } = await supabase.from('electricity').insert([
+    {
+      facility: electricityFacility,
+      year: electricityYear,
+      month: electricityMonth,
+      electricity_type: electricityType,
+      electricity_source: electricitySource,
+      unit: electricityUnit,
+      amount_consumed: electricityAmount
+    }
+  ]);
+
+  if (error) {
+    console.error('Insert error:', error);
+    alert('Failed to save electricity data!');
+  } else {
+    console.log('Insert successful:', data);
+    alert('Electricity data saved successfully!');
+    // Optionally reset form
+    setElectricityFacility('');
+    setElectricityYear('');
+    setElectricityMonth('');
+    setElectricityType('');
+    setElectricitySource('');
+    setElectricityUnit('');
+    setElectricityAmount('');
+  }
+};
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
@@ -194,15 +233,98 @@ const CarbonFootprint: React.FC = () => {
               </div>
             )}
 
-            {activeTab === 'electricity' && (
-              <div>
-                <h3>Electricity</h3>
-                <IonItem>
-                  <IonLabel position="floating">Electricity Consumption</IonLabel>
-                  <IonInput placeholder="Enter consumption" />
-                </IonItem>
-              </div>
-            )}
+           {activeTab === 'electricity' && (
+  <div>
+    <h3>Electricity</h3>
+
+    <IonItem>
+  <IonLabel position="stacked">Facility*</IonLabel>
+  <IonSelect
+    value={electricityFacility}
+    placeholder="Choose Facility"
+    onIonChange={e => setElectricityFacility(e.detail.value)}
+  >
+    <IonSelectOption value="Residential Areas">Residential Areas</IonSelectOption>
+    <IonSelectOption value="Hostels">Hostels</IonSelectOption>
+    <IonSelectOption value="Academic Area">Academic Area</IonSelectOption>
+    <IonSelectOption value="Health Centre">Health Centre</IonSelectOption>
+    <IonSelectOption value="Schools">Schools</IonSelectOption>
+    <IonSelectOption value="Visitor's Hostel">Visitor's Hostel</IonSelectOption>
+    <IonSelectOption value="Servant's Quarters">Servant's Quarters</IonSelectOption>
+    <IonSelectOption value="Shops/Bank/PO">Shops/Bank/PO</IonSelectOption>
+    <IonSelectOption value="Lawns and Horticulture">Lawns and Horticulture</IonSelectOption>
+    <IonSelectOption value="Others">Others</IonSelectOption>
+  </IonSelect>
+</IonItem>
+
+
+    <IonItem>
+      <IonLabel position="stacked">Year*</IonLabel>
+      <IonSelect value={electricityYear} placeholder="Choose Year" onIonChange={e => setElectricityYear(e.detail.value)}>
+        <IonSelectOption value="2023">2023</IonSelectOption>
+        <IonSelectOption value="2024">2024</IonSelectOption>
+        <IonSelectOption value="2025">2025</IonSelectOption>
+      </IonSelect>
+    </IonItem>
+
+    <IonItem>
+      <IonLabel position="stacked">Month*</IonLabel>
+      <IonSelect value={electricityMonth} placeholder="Choose Month" onIonChange={e => setElectricityMonth(e.detail.value)}>
+        <IonSelectOption value="January">January</IonSelectOption>
+        <IonSelectOption value="February">February</IonSelectOption>
+        <IonSelectOption value="March">March</IonSelectOption>
+        <IonSelectOption value="April">April</IonSelectOption>
+        <IonSelectOption value="May">May</IonSelectOption>
+        <IonSelectOption value="June">June</IonSelectOption>
+        <IonSelectOption value="July">July</IonSelectOption>
+        <IonSelectOption value="August">August</IonSelectOption>
+        <IonSelectOption value="September">September</IonSelectOption>
+        <IonSelectOption value="October">October</IonSelectOption>
+        <IonSelectOption value="November">November</IonSelectOption>
+        <IonSelectOption value="December">December</IonSelectOption>
+      </IonSelect>
+    </IonItem>
+
+    <IonItem>
+      <IonLabel position="stacked">Electricity Type*</IonLabel>
+      <IonSelect value={electricityType} placeholder="Choose Electricity Type" onIonChange={e => setElectricityType(e.detail.value)}>
+        <IonSelectOption value="Renewable">Renewable</IonSelectOption>
+        <IonSelectOption value="Non-Renewable">Non-Renewable</IonSelectOption>
+      </IonSelect>
+    </IonItem>
+
+    <IonItem>
+      <IonLabel position="stacked">Electricity Source*</IonLabel>
+      <IonSelect value={electricitySource} placeholder="Choose Electricity Source" onIonChange={e => setElectricitySource(e.detail.value)}>
+        <IonSelectOption value="Solar">Solar</IonSelectOption>
+        <IonSelectOption value="Grid">Grid</IonSelectOption>
+        <IonSelectOption value="Diesel Generator">Diesel Generator</IonSelectOption>
+        <IonSelectOption value="Wind">Wind</IonSelectOption>
+        <IonSelectOption value="Hydro">Hydro</IonSelectOption>
+        <IonSelectOption value="Other">Other</IonSelectOption>
+      </IonSelect>
+    </IonItem>
+
+    <IonItem>
+      <IonLabel position="stacked">Unit*</IonLabel>
+      <IonSelect value={electricityUnit} placeholder="Choose Unit" onIonChange={e => setElectricityUnit(e.detail.value)}>
+        <IonSelectOption value="kWh">kWh</IonSelectOption>
+        <IonSelectOption value="MWh">MWh</IonSelectOption>
+        <IonSelectOption value="Units">Units</IonSelectOption>
+      </IonSelect>
+    </IonItem>
+
+    <IonItem>
+      <IonLabel position="stacked">Amount Consumed*</IonLabel>
+      <IonInput type="number" value={electricityAmount} placeholder="Enter amount" onIonChange={e => setElectricityAmount(e.detail.value!)} />
+    </IonItem>
+
+    <IonButton expand="block" className="ion-margin-top" onClick={handleSaveElectricity}>
+      Save
+    </IonButton>
+  </div>
+)}
+
 
             {activeTab === 'travel' && (
               <div>
