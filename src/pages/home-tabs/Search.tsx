@@ -16,6 +16,8 @@ import {
   useIonToast
 } from '@ionic/react';
 import { useState } from 'react';
+import { IonAlert } from '@ionic/react';
+
 import { supabase } from '../../utils/supabaseClient'; // ✅ Supabase client import
 
 const CarbonFootprint: React.FC = () => {
@@ -39,7 +41,20 @@ const [electricitySource, setElectricitySource] = useState('');
 const [electricityUnit, setElectricityUnit] = useState('');
 const [electricityAmount, setElectricityAmount] = useState('');
 
+const [travelFacility, setTravelFacility] = useState('');
+const [travelYear, setTravelYear] = useState('');
+const [travelMonth, setTravelMonth] = useState('');
+const [transportMode, setTransportMode] = useState('');
+const [distanceKM, setDistanceKM] = useState('');
 
+const [trees, setTrees] = useState<number>(0);
+const [soilArea, setSoilArea] = useState<number>(0);
+const [grassArea, setGrassArea] = useState<number>(0);
+const [waterArea, setWaterArea] = useState<number>(0);
+const [showPopUp, setShowPopUp] = useState<boolean>(false);
+  const [isFinalized, setIsFinalized] = useState<boolean>(false);
+const [finalResult, setFinalResult] = useState<number | null>(null);
+  
   const handleSave = async () => {
     if (!facility || !hostel || !year || !month || !fuelType || !unit || !amount) {
       presentToast({
@@ -115,9 +130,119 @@ const handleSaveElectricity = async () => {
     setElectricityAmount('');
   }
 };
+
+const handleTravelSave = async () => {
+  const { data, error } = await supabase.from('travel').insert([
+    {
+      facility: travelFacility,
+      year: travelYear,
+      month: travelMonth,
+      transport_mode: transportMode,
+      distance_km: parseFloat(distanceKM),
+    },
+  ]);
+
+  if (error) {
+    console.error('Error saving travel data:', error.message);
+    alert('Failed to save travel data.');
+  } else {
+    alert('Travel data saved successfully!');
+    // Optionally reset form
+    setTravelFacility('');
+    setTravelYear('');
+    setTravelMonth('');
+    setTransportMode('');
+    setDistanceKM('');
+  }
+};const handleOffsetSave = async () => {
+  // Ensure all values are numbers
+  const treesPlanted = Number(trees);
+  const soilAreaValue = Number(soilArea);
+  const grassAreaValue = Number(grassArea);
+  const waterAreaValue = Number(waterArea);
+
+  const { data, error } = await supabase.from('off').insert([
+    {
+      facility,
+      year,
+      month,
+      trees_planted: treesPlanted,
+      area_soil: soilAreaValue,
+      area_grass: grassAreaValue,
+      area_water: waterAreaValue,
+    },
+  ]);
+
+  if (error) {
+    console.error('Insert error:', error);
+    alert('Error saving offset data');
+  } else {
+    alert('Offset data saved successfully!');
+    setShowPopUp(true);
+  }
+};
+
+ const handleAddAnotherInstance = () => {
+    // Clear the form so the user can add another instance
+    setFacility('');
+    setYear('');
+    setMonth('');
+    setTrees(0);
+    setSoilArea(0);
+    setGrassArea(0);
+    setWaterArea(0);
+    setShowPopUp(false); // Close the pop-up
+  };
+const fetchAndCalculateResults = async () => {
+  try {
+    // Fetch all relevant data tables
+    const { data: fossilData } = await supabase.from('fossil_fuel').select('*');
+    const { data: electricityData } = await supabase.from('electricity').select('*');
+    const { data: travelData } = await supabase.from('travel').select('*');
+    const { data: offsetData } = await supabase.from('off').select('*');
+
+    // Replace these with your actual emission calculation logic
+    const fossilTotal = fossilData.reduce((sum, item) => {
+      // Example: assuming you have a function or constant for emission factor
+      // return sum + item.amount_consumed * emissionFactorForFuelType(item.fuel_type);
+      return sum + 0; // placeholder
+    }, 0);
+
+    const electricityTotal = electricityData.reduce((sum, item) => {
+      return sum + 0; // replace with your calculation
+    }, 0);
+
+    const travelTotal = travelData.reduce((sum, item) => {
+      return sum + 0; // replace with your calculation
+    }, 0);
+
+    const offsetTotal = offsetData.reduce((sum, item) => {
+      return sum + 0; // replace with your calculation
+    }, 0);
+
+    const total = fossilTotal + electricityTotal + travelTotal - offsetTotal;
+
+    setFinalResult(total);
+
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+ const handleFinaliseAndShowResults = async () => {
+  await fetchAndCalculateResults();  // fetch data, calculate total
+  setIsFinalized(true);
+  setShowPopUp(false);
+  alert('Finalized! You can now view the results.');
+};
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
+const handleInputChange = (setter: React.Dispatch<React.SetStateAction<number>>) => {
+  return (e: any) => {
+    const value = e.detail.value;
+    setter(isNaN(value) ? 0 : parseFloat(value));
+  };
+};
 
   return (
     <IonPage>
@@ -327,24 +452,195 @@ const handleSaveElectricity = async () => {
 
 
             {activeTab === 'travel' && (
-              <div>
-                <h3>Travel</h3>
-                <IonItem>
-                  <IonLabel position="floating">Travel Distance</IonLabel>
-                  <IonInput placeholder="Enter distance traveled" />
-                </IonItem>
-              </div>
+             <div>
+  <h3>Travel</h3>
+
+  {/* Facility */}
+  <IonItem>
+    <IonLabel position="stacked">Facility*</IonLabel>
+    <IonSelect
+      value={travelFacility}
+      placeholder="Choose Facility"
+      onIonChange={e => setTravelFacility(e.detail.value)}
+    >
+      <IonSelectOption value="Residential Areas">Residential Areas</IonSelectOption>
+      <IonSelectOption value="Hostels">Hostels</IonSelectOption>
+      <IonSelectOption value="Academic Area">Academic Area</IonSelectOption>
+      <IonSelectOption value="Health Centre">Health Centre</IonSelectOption>
+      <IonSelectOption value="Schools">Schools</IonSelectOption>
+      <IonSelectOption value="Visitor's Hostel">Visitor's Hostel</IonSelectOption>
+      <IonSelectOption value="Servant's Quarters">Servant's Quarters</IonSelectOption>
+      <IonSelectOption value="Shops/Bank/PO">Shops/Bank/PO</IonSelectOption>
+      <IonSelectOption value="Lawns and Horticulture">Lawns and Horticulture</IonSelectOption>
+      <IonSelectOption value="Others">Others</IonSelectOption>
+    </IonSelect>
+  </IonItem>
+
+  {/* Year */}
+  <IonItem>
+    <IonLabel position="stacked">Year*</IonLabel>
+    <IonSelect
+      value={travelYear}
+      placeholder="Choose Year"
+      onIonChange={e => setTravelYear(e.detail.value)}
+    >
+      <IonSelectOption value="2023">2023</IonSelectOption>
+      <IonSelectOption value="2024">2024</IonSelectOption>
+      <IonSelectOption value="2025">2025</IonSelectOption>
+    </IonSelect>
+  </IonItem>
+
+  {/* Month */}
+  <IonItem>
+    <IonLabel position="stacked">Month*</IonLabel>
+    <IonSelect
+      value={travelMonth}
+      placeholder="Choose Month"
+      onIonChange={e => setTravelMonth(e.detail.value)}
+    >
+      <IonSelectOption value="January">January</IonSelectOption>
+      <IonSelectOption value="February">February</IonSelectOption>
+      <IonSelectOption value="March">March</IonSelectOption>
+      <IonSelectOption value="April">April</IonSelectOption>
+      <IonSelectOption value="May">May</IonSelectOption>
+      <IonSelectOption value="June">June</IonSelectOption>
+      <IonSelectOption value="July">July</IonSelectOption>
+      <IonSelectOption value="August">August</IonSelectOption>
+      <IonSelectOption value="September">September</IonSelectOption>
+      <IonSelectOption value="October">October</IonSelectOption>
+      <IonSelectOption value="November">November</IonSelectOption>
+      <IonSelectOption value="December">December</IonSelectOption>
+    </IonSelect>
+  </IonItem>
+
+  {/* Mode of Transport */}
+  <IonItem>
+    <IonLabel position="stacked">Mode of Transport*</IonLabel>
+    <IonSelect
+      value={transportMode}
+      placeholder="Choose Mode of Transport"
+      onIonChange={e => setTransportMode(e.detail.value)}
+    >
+      <IonSelectOption value="Bus">Bus</IonSelectOption>
+      <IonSelectOption value="Car">Car</IonSelectOption>
+      <IonSelectOption value="Motorcycle">Motorcycle</IonSelectOption>
+      <IonSelectOption value="Train">Train</IonSelectOption>
+      <IonSelectOption value="Bicycle">Bicycle</IonSelectOption>
+      <IonSelectOption value="Walking">Walking</IonSelectOption>
+      <IonSelectOption value="Others">Others</IonSelectOption>
+    </IonSelect>
+  </IonItem>
+
+  {/* Distance */}
+  <IonItem>
+    <IonLabel position="stacked">Distance Travelled (KM)*</IonLabel>
+    <IonInput
+      type="number"
+      value={distanceKM}
+      placeholder="Enter Approximate Distance"
+      onIonChange={e => setDistanceKM(e.detail.value!)}
+    />
+  </IonItem>
+
+  <IonButton expand="block" className="ion-margin-top" onClick={() => handleTravelSave()}>
+    Save
+  </IonButton>
+</div>
+
             )}
 
-            {activeTab === 'offset' && (
-              <div>
-                <h3>Offset</h3>
-                <IonItem>
-                  <IonLabel position="floating">Offset Amount</IonLabel>
-                  <IonInput placeholder="Enter offset amount" />
-                </IonItem>
-              </div>
-            )}
+           {activeTab === 'offset' && (
+  <div>
+    <h3>Offset</h3>
+
+        <IonItem>
+          <IonLabel position="stacked">Facility*</IonLabel>
+          <IonSelect value={facility} placeholder="Choose Facility" onIonChange={e => setFacility(e.detail.value)}>
+            <IonSelectOption value="Residential Areas">Residential Areas</IonSelectOption>
+            <IonSelectOption value="Hostels">Hostels</IonSelectOption>
+            <IonSelectOption value="Academic Area">Academic Area</IonSelectOption>
+            <IonSelectOption value="Health Centre">Health Centre</IonSelectOption>
+            <IonSelectOption value="Schools">Schools</IonSelectOption>
+            <IonSelectOption value="Visitor's Hostel">Visitor's Hostel</IonSelectOption>
+            <IonSelectOption value="Servant's Quarters">Servant's Quarters</IonSelectOption>
+            <IonSelectOption value="Shops/Bank/PO">Shops/Bank/PO</IonSelectOption>
+            <IonSelectOption value="Lawns and Horticulture">Lawns and Horticulture</IonSelectOption>
+            <IonSelectOption value="Others">Others</IonSelectOption>
+          </IonSelect>
+        </IonItem>
+
+        <IonItem>
+          <IonLabel position="stacked">Year*</IonLabel>
+          <IonSelect value={year} placeholder="Choose Year" onIonChange={e => setYear(e.detail.value)}>
+            <IonSelectOption value="2023">2023</IonSelectOption>
+            <IonSelectOption value="2024">2024</IonSelectOption>
+            <IonSelectOption value="2025">2025</IonSelectOption>
+          </IonSelect>
+        </IonItem>
+
+        <IonItem>
+          <IonLabel position="stacked">Month*</IonLabel>
+          <IonSelect value={month} placeholder="Choose Month" onIonChange={e => setMonth(e.detail.value)}>
+            {["January", "February", "March", "April", "May", "June", "July", 
+              "August", "September", "October", "November", "December"].map((m) => (
+              <IonSelectOption key={m} value={m}>{m}</IonSelectOption>
+            ))}
+          </IonSelect>
+        </IonItem>
+
+        <IonItem>
+          <IonLabel position="stacked">Number of Trees in the Facility*</IonLabel>
+          <IonInput type="number" value={trees} onIonChange={handleInputChange(setTrees)} />
+        </IonItem>
+
+        <IonItem>
+          <IonLabel position="stacked">Area Covered Under Soil (m²)*</IonLabel>
+          <IonInput type="number" value={soilArea} onIonChange={handleInputChange(setSoilArea)} />
+        </IonItem>
+
+        <IonItem>
+          <IonLabel position="stacked">Area Covered Under Grass (m²)*</IonLabel>
+          <IonInput type="number" value={grassArea} onIonChange={handleInputChange(setGrassArea)} />
+        </IonItem>
+
+        <IonItem>
+          <IonLabel position="stacked">Area Covered Under Water (m²)*</IonLabel>
+          <IonInput type="number" value={waterArea} onIonChange={handleInputChange(setWaterArea)} />
+        </IonItem>
+
+        <IonButton expand="block" className="ion-margin-top" onClick={handleOffsetSave}>
+          Save
+        </IonButton>
+
+        {/* Pop-up with buttons after save */}
+        {showPopUp && !isFinalized && (
+          <IonAlert
+            isOpen={showPopUp}
+            onDidDismiss={() => setShowPopUp(false)}
+            header="Save Successful"
+            message="Choose an option:"
+            buttons={[
+              {
+                text: 'Add Another Instance',
+                handler: handleAddAnotherInstance,
+              },
+              {
+                text: 'Finalise and Show Results',
+                handler: handleFinaliseAndShowResults,
+                
+              },
+            ]}
+          />
+        )}
+      </div>
+      
+)}
+{isFinalized && finalResult !== null && (
+  <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc' }}>
+    <h2>Your Total Carbon Footprint</h2>
+    <p>{finalResult.toFixed(2)} kg CO₂e</p>
+  </div>
+)}
           </div>
         </div>
       </IonContent>

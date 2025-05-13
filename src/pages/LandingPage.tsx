@@ -289,6 +289,12 @@ Promoting carbon awareness among students, faculty, and staff is key to fosterin
             <h2>Contact Us</h2>
             <p>Email: info@ecolife.org</p>
             <p>Phone: +123 456 7890</p>
+              <p>
+      Visit the <a href="https://nbsc.edu.ph/" target="_blank" rel="noopener noreferrer">NBSC Website</a>
+    </p>
+     <p>
+      Visit the <a href="https://www.facebook.com/aparane" target="_blank" rel="noopener noreferrer">My Facebook account</a>
+    </p>
           </section>
 
           <section id="calculate" style={{ padding: '16px', textAlign: 'center', color: 'darkgreen' }}>
