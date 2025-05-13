@@ -25,6 +25,7 @@ import Details from './Details';
 import { supabase } from '../utils/supabaseClient';
 import { useState } from 'react';
 import EditProfilePage from './EditProfilePage';
+import CarbonFootprint from './home-tabs/Search';
 
 
   const Menu: React.FC = () => {
@@ -37,6 +38,7 @@ import EditProfilePage from './EditProfilePage';
         {name:'Home', url: '/it35-lab/app/home', icon: homeOutline},
         {name:'About', url: '/it35-lab/app/about', icon: rocketOutline},
         {name:'Profile', url: '/it35-lab/app/profile', icon: settingsOutline},
+         {name:'CarbonFootprint', url: '/it35-lab/app/CarbonFootprint', icon: settingsOutline},
     ]
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut();
@@ -86,6 +88,7 @@ import EditProfilePage from './EditProfilePage';
                     <Route exact path="/it35-lab/app/home/details" component={Details} />
                     <Route exact path="/it35-lab/app/about" component={About} />
                     <Route exact path="/it35-lab/app/profile" component={EditProfilePage} />
+                    <Route exact path="/it35-lab/app/CarbonFootprint" component={CarbonFootprint} />
 
                     <Route exact path="/it35-lab/app">
                         <Redirect to="/it35-lab/app/home"/>

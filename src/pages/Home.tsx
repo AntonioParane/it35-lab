@@ -23,7 +23,7 @@ import Search from './home-tabs/Search';
 const Home: React.FC = () => {
   const tabs = [
     {
-      name: 'Feed',
+      name: 'Resports',
       tab: 'feed',
       url: '/it35-lab/app/home/feed',
       icon: 'https://cdn-icons-gif.flaticon.com/9583/9583344.gif'
@@ -31,7 +31,7 @@ const Home: React.FC = () => {
     {
       name: 'Search',
       tab: 'search',
-      url: '/it35-lab/app/home/search',
+      url: '/it35-lab/app/home/Search',
       icon: 'https://cdn.dribbble.com/users/1100029/screenshots/6276269/loading-search-animation-2_1-drb.gif'
     },
     {
@@ -47,7 +47,7 @@ const Home: React.FC = () => {
       <IonTabs>
         <IonRouterOutlet>
           <Route exact path="/it35-lab/app/home/feed" render={Feed} />
-          <Route exact path="/it35-lab/app/home/search" render={Search} />
+          <Route exact path="/it35-lab/app/home/CarbonFootprint" render={Search} />
           <Route exact path="/it35-lab/app/home/favorites" render={Favorites} />
           <Route exact path="/it35-lab/app/home">
             <Redirect to="/it35-lab/app/home/feed" />
