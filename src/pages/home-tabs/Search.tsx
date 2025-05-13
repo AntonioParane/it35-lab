@@ -191,33 +191,30 @@ const handleTravelSave = async () => {
     setSoilArea(0);
     setGrassArea(0);
     setWaterArea(0);
-    setShowPopUp(false); // Close the pop-up
+    setShowPopUp(false); 
   };
 const fetchAndCalculateResults = async () => {
   try {
-    // Fetch all relevant data tables
     const { data: fossilData } = await supabase.from('fossil_fuel').select('*');
     const { data: electricityData } = await supabase.from('electricity').select('*');
     const { data: travelData } = await supabase.from('travel').select('*');
     const { data: offsetData } = await supabase.from('off').select('*');
 
-    // Replace these with your actual emission calculation logic
-    const fossilTotal = fossilData.reduce((sum, item) => {
-      // Example: assuming you have a function or constant for emission factor
-      // return sum + item.amount_consumed * emissionFactorForFuelType(item.fuel_type);
-      return sum + 0; // placeholder
+    const fossilTotal = (fossilData || []).reduce((sum, item) => {
+     
+      return sum + 0; 
     }, 0);
 
-    const electricityTotal = electricityData.reduce((sum, item) => {
-      return sum + 0; // replace with your calculation
+    const electricityTotal = (electricityData || []).reduce((sum, item) => {
+      return sum + 0; 
     }, 0);
 
-    const travelTotal = travelData.reduce((sum, item) => {
-      return sum + 0; // replace with your calculation
+    const travelTotal = (travelData || []).reduce((sum, item) => {
+      return sum + 0; 
     }, 0);
 
-    const offsetTotal = offsetData.reduce((sum, item) => {
-      return sum + 0; // replace with your calculation
+    const offsetTotal = (offsetData || []).reduce((sum, item) => {
+      return sum + 0; 
     }, 0);
 
     const total = fossilTotal + electricityTotal + travelTotal - offsetTotal;
